@@ -5,6 +5,15 @@ from datetime import datetime
 from dotenv import load_dotenv 
 app = Flask(__name__)
 
+load_dotenv()  
+AI_KEY = os.getenv("GROQ_API_KEY")  
+
+if not AI_KEY:
+    raise ValueError("❌ API key tidak ditemukan! Pastikan file .env sudah dibuat dan berisi GROQ_API_KEY.")
+
+
+client = Groq(api_key=AI_KEY)
+
 def ai_call(year):
     try:
         chat_completion = client.chat.completions.create(
@@ -67,8 +76,4 @@ def favicon():
     )
 
 if __name__ == "__main__":
-       if __name__ == "__main__":
-    from dotenv import load_dotenv
-    load_dotenv()
-    app.run(host="0.0.0.0", port=8000)
-
+       app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
